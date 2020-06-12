@@ -5,7 +5,7 @@ import { loginUser, logoutUser } from "../src/actions/authActions";
 import history from "./history";
 import "antd/dist/antd.css";
 
-const Login = props => {
+const Login = (props) => {
   const [isLoged, setIsLoged] = useState(false);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -42,16 +42,16 @@ const Login = props => {
       //props.logoutUser();
     }
     if (props.userAuth.isSignedIn) {
-      history.push("/home");
+      history.push("/dashboard");
     }
   };
 
-  const onUserNameChange = e => {
+  const onUserNameChange = (e) => {
     //console.log(e.target.value);
     setUserName(e.target.value);
   };
 
-  const onPassChange = e => {
+  const onPassChange = (e) => {
     //console.log(e.target.value);
     setPassword(e.target.value);
   };
@@ -66,14 +66,14 @@ const Login = props => {
             border: "1px solid black",
             padding: "30px",
             borderRadius: "5px",
-            background: "#FAFAFA"
+            background: "#FAFAFA",
           }}
         >
           <div style={{ textAlign: "center" }}>
             <Icon style={{ fontSize: "60px" }} type="user" />
           </div>
           <div style={{ margin: "30px" }}>
-          <label>Username</label>
+            <label>Username</label>
             <Input
               onChange={onUserNameChange}
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -81,7 +81,7 @@ const Login = props => {
             />
           </div>
           <div style={{ margin: "30px" }}>
-          <label>Password</label>
+            <label>Password</label>
             <Input
               onChange={onPassChange}
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
@@ -105,7 +105,7 @@ const Login = props => {
   );
 };
 
-const mapStateToProps = state => {
-return { userAuth: state.userAuth };
+const mapStateToProps = (state) => {
+  return { userAuth: state.userAuth };
 };
 export default connect(mapStateToProps, { loginUser, logoutUser })(Login);

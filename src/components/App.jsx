@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { Switch, Router, Route, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Login from "../Login";
-import Menu from "./Menu";
+import MenuIndex from "./Menu";
+
 import { loginUser } from "../actions/authActions";
 import history from "../history";
 import { connect } from "react-redux";
+import DashboardIndex from "./dashboard";
 
 const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
   {
@@ -18,9 +20,9 @@ const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
       {...rest}
       render={(props) =>
         user.isSignedIn === true ? (
-          <menuIndex>
+          <MenuIndex>
             <Component {...props} />
-          </menuIndex>
+          </MenuIndex>
         ) : (
           <Redirect to="/login" />
         )
@@ -29,7 +31,7 @@ const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
   );
 };
 
-const App = props => {
+const App = (props) => {
   const dispatch = useDispatch();
   //const user = useSelector(state => state.userAuth);
   const user = props.userAuth;
@@ -39,9 +41,9 @@ const App = props => {
     <Router history={history}>
       <Switch>
         <PrivateRoute
-          path="/home"
+          path="/dashboard"
           exact
-          component={Menu}
+          component={DashboardIndex}
           user={user}
           dispatch={dispatch}
         />
@@ -53,7 +55,7 @@ const App = props => {
     </Router>
   );
 };
-const mapStateToProps = state => {
-return { userAuth: state.userAuth };
+const mapStateToProps = (state) => {
+  return { userAuth: state.userAuth };
 };
 export default connect(mapStateToProps)(App);

@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  isSignedIn: null
+  isSignedIn: true,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -7,12 +7,12 @@ export default (state = INITIAL_STATE, action) => {
     case "LOGIN_USER":
       return {
         ...state,
-        isSignedIn: true
+        isSignedIn: true,
       };
     case "LOGOUT_USER":
       return {
         ...state,
-        isSignedIn: false
+        isSignedIn: false,
       };
     default:
       return state;
