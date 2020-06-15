@@ -1,9 +1,9 @@
 import React,{useState} from 'react';
 import { Card, Col, Row } from 'antd';
-import index from './index'
+import dashboardIndex from './dashboardIndex
 
 
-const card = (props) => { 
+const detailCard = (props) => { 
     return(
     <div className="site-card-wrapper">
       <Row gutter={16}>
@@ -16,4 +16,4 @@ const card = (props) => {
     </div>,
       );
 }
-export default card;
+export default detailCard;
