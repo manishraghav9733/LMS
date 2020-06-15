@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { Layout, Menu, Breadcrumb, Avatar, Badge } from "antd";
+import { Layout, Menu, Breadcrumb, Avatar, Badge, Button } from "antd";
 import {
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
+import history from "../history";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -21,7 +22,7 @@ const MenuIndex = (props) => {
       menuList: [
         {
           key: "/dashboard",
-          // onClick: () => history.push("/questions"),
+          onClick: () => history.push("/dashboard"),
           label: "List",
         },
       ],
@@ -33,7 +34,7 @@ const MenuIndex = (props) => {
       menuList: [
         {
           key: "/all-leads",
-          // onClick: () => history.push("/questions"),
+          //   onClick: () => history.push("/all-leads"),
           label: "List",
         },
       ],
@@ -54,7 +55,6 @@ const MenuIndex = (props) => {
 
   return (
     <div>
-      <h1>Menu</h1>
       <Layout>
         <Header className="header">
           <div className="logo" />
@@ -63,10 +63,24 @@ const MenuIndex = (props) => {
             <Menu.Item key="2">Leads</Menu.Item>
             <Menu.Item key="3">New Leads</Menu.Item>
             <Menu.Item key="4">Status</Menu.Item>
+            <Menu.Item style={{ float: "right" }} key="5">
+              <Button style={{ marginTop: "20px" }} type="danger">
+                Log Out
+              </Button>
+            </Menu.Item>
           </Menu>
         </Header>
         <Layout>
-          <Sider width={200} className="site-layout-background">
+          <Sider
+            style={{
+              overflow: "auto",
+              height: "100vh",
+              //  position: "fixed",
+              //  left: 0,
+            }}
+            width={200}
+            className="site-layout-background"
+          >
             <Menu
               mode="inline"
               theme="dark"
@@ -90,18 +104,22 @@ const MenuIndex = (props) => {
                   title={item.label}
                 >
                   {item.menuList.map((subItem, subI) => (
-                    <Menu.Item key={subItem.key}>{subItem.label}</Menu.Item>
+                    <Menu.Item onClick={subItem.onClick} key={subItem.key}>
+                      {subItem.label}
+                    </Menu.Item>
                   ))}
                 </SubMenu>
               ))}
             </Menu>
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>
+            {/**
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
               <Breadcrumb.Item>List</Breadcrumb.Item>
               <Breadcrumb.Item>App</Breadcrumb.Item>
             </Breadcrumb>
+             */}
             <Content
               className="site-layout-background"
               style={{
@@ -110,7 +128,13 @@ const MenuIndex = (props) => {
                 minHeight: 280,
               }}
             >
-              {props.Content}
+              <div
+                style={{
+                  margin: "10px 15px 30px 15px",
+                }}
+              >
+                {props.children}
+              </div>
             </Content>
           </Layout>
         </Layout>
@@ -119,4 +143,4 @@ const MenuIndex = (props) => {
   );
 };
 
-export default MenuIndex;;
+export default MenuIndex;

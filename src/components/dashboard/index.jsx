@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import { Card, Col, Row } from 'antd';
 
 const App =()=>{
@@ -15,3 +16,15 @@ const App =()=>{
     )
 };
 export default App;
+=======
+
+const DashboardIndex = () => {
+  return (
+    <div>
+      <h1>Dashboard Index</h1>
+    </div>
+  );
+};
+
+export default DashboardIndex;
+>>>>>>> 355725b10410b299d864c3363801aa02eb76ef1d
