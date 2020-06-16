@@ -34,7 +34,7 @@ const MenuIndex = (props) => {
       menuList: [
         {
           key: "/all-leads",
-          //   onClick: () => history.push("/all-leads"),
+          onClick: () => history.push("/all-leads"),
           label: "List",
         },
       ],
@@ -46,7 +46,7 @@ const MenuIndex = (props) => {
       menuList: [
         {
           key: "/new-leads",
-          // onClick: () => history.push("/questions"),
+          onClick: () => history.push("/new-leads"),
           label: "List",
         },
       ],
@@ -58,10 +58,16 @@ const MenuIndex = (props) => {
       <Layout>
         <Header className="header">
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-            <Menu.Item key="1">Home </Menu.Item>
-            <Menu.Item key="2">Leads</Menu.Item>
-            <Menu.Item key="3">New Leads</Menu.Item>
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
+            <Menu.Item onClick={() => history.push("/dashboard")} key="1">
+              Home{" "}
+            </Menu.Item>
+            <Menu.Item onClick={() => history.push("/all-leads")} key="2">
+              Leads
+            </Menu.Item>
+            <Menu.Item onClick={() => history.push("/new-leads")} key="3">
+              New Leads
+            </Menu.Item>
             <Menu.Item key="4">Status</Menu.Item>
             <Menu.Item style={{ float: "right" }} key="5">
               <Button style={{ marginTop: "20px" }} type="danger">

@@ -8,6 +8,7 @@ import { loginUser } from "../actions/authActions";
 import history from "../history";
 import { connect } from "react-redux";
 import DashboardIndex from "./dashboard";
+import NotFound from "./NotFound";
 
 const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
   {
@@ -44,6 +45,20 @@ const App = (props) => {
           path="/dashboard"
           exact
           component={DashboardIndex}
+          user={user}
+          dispatch={dispatch}
+        />
+        <PrivateRoute
+          path="/all-leads"
+          exact
+          component={NotFound}
+          user={user}
+          dispatch={dispatch}
+        />
+        <PrivateRoute
+          path="/new-leads"
+          exact
+          component={NotFound}
           user={user}
           dispatch={dispatch}
         />
