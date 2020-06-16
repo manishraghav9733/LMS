@@ -1,11 +1,17 @@
 import React from "react";
+import { Card, Col, Row } from "antd";
 
-const DashboardIndex = () => {
+const App = () => {
   return (
-    <div>
-      <h1>Dashboard Index</h1>
+    <div className="site-card-wrapper">
+      <Row gutter={16}>
+        <Col span={8}>
+          <Card>
+            <detailCard title="clients" value="5" />
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
-
-export default DashboardIndex;
+export default App;
