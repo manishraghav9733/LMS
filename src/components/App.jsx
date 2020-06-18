@@ -9,6 +9,7 @@ import history from "../history";
 import { connect } from "react-redux";
 import DashboardIndex from "./dashboard";
 import NotFound from "./NotFound";
+import LeadsIndex from "./allLeads/LeadsIndex";
 
 const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
   {
@@ -51,7 +52,7 @@ const App = (props) => {
         <PrivateRoute
           path="/all-leads"
           exact
-          component={NotFound}
+          component={LeadsIndex}
           user={user}
           dispatch={dispatch}
         />

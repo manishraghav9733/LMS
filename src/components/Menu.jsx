@@ -13,6 +13,7 @@ const { Header, Content, Sider } = Layout;
 
 const MenuIndex = (props) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedMenuKey, setSelectedMenuKey] = useState("");
 
   const MenuItems = [
     {
@@ -53,19 +54,46 @@ const MenuIndex = (props) => {
     },
   ];
 
+  const onTopMenuNavigation = (type) => {
+    setSelectedMenuKey(type);
+    switch (type) {
+      case "dashboard":
+        return history.push("/dashboard");
+      case "all-leads":
+        return history.push("/all-leads");
+      case "new-leads":
+        return history.push("/new-leads");
+      default:
+        return null;
+    }
+  };
+
   return (
     <div>
       <Layout>
         <Header className="header">
           <div className="logo" />
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
-            <Menu.Item onClick={() => history.push("/dashboard")} key="1">
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={selectedMenuKey}
+          >
+            <Menu.Item
+              onClick={() => onTopMenuNavigation("dashboard")}
+              key="dashboard"
+            >
               Home{" "}
             </Menu.Item>
-            <Menu.Item onClick={() => history.push("/all-leads")} key="2">
+            <Menu.Item
+              onClick={() => onTopMenuNavigation("all-leads")}
+              key="all-leads"
+            >
               Leads
             </Menu.Item>
-            <Menu.Item onClick={() => history.push("/new-leads")} key="3">
+            <Menu.Item
+              onClick={() => onTopMenuNavigation("new-leads")}
+              key="new-leads"
+            >
               New Leads
             </Menu.Item>
             <Menu.Item key="4">Status</Menu.Item>
@@ -131,7 +159,8 @@ const MenuIndex = (props) => {
               style={{
                 padding: 24,
                 margin: 0,
-                minHeight: 280,
+                // minHeight: 280,
+                //  overflowY: "hidden",
               }}
             >
               <div
