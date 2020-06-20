@@ -58,19 +58,20 @@ const Login = (props) => {
 
   return (
     <div>
-      <div className="container" style={{ marginTop: "50px" }}>
+      <div className="container" style={{ marginTop: "5%" }}>
         <div
           style={{
-            maxWidth: "500px",
+            maxWidth: "420px",
             margin: "0px auto",
-            border: "1px solid black",
             padding: "30px",
             borderRadius: "5px",
             background: "#FAFAFA",
+            boxShadow: "0 8px 6px -6px black",
+            marginTop:"12%"
           }}
         >
           <div style={{ textAlign: "center" }}>
-            <Icon style={{ fontSize: "60px" }} type="user" />
+            <img src="https://www.ranoliaventures.com/images/logo.png" />
           </div>
           <div style={{ margin: "30px" }}>
             <label>Username</label>
@@ -94,6 +95,7 @@ const Login = (props) => {
               onClick={handleLogin}
               type="primary"
               className="login-form-button"
+              style={{background:"#31b5ab",borderColor:"#31b5ab"}}
             >
               <Icon type="login" />
               Log in

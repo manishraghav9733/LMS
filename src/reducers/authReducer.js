@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  isSignedIn: true,
+  isSignedIn: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
