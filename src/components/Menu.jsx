@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { Layout, Menu, Breadcrumb, Avatar, Badge, Button } from "antd";
 import {
   UserOutlined,
@@ -41,14 +40,20 @@ const MenuIndex = (props) => {
       ],
     },
     {
-      key: "new-leads",
+      key: "/manager",
       icon: "question-circle",
-      label: "New Leads",
+      label: "Manager",
+      
       menuList: [
         {
-          key: "/new-leads",
-          onClick: () => history.push("/new-leads"),
-          label: "List",
+          key: "/manager",
+          onClick: () => history.push("/manager"),
+          label: "Add Manager",
+        },
+        {
+          key: "/allManagerIndex/manager",
+          onClick: () => history.push("/allManagerIndex/manager"),
+          label: "All Manager",
         },
       ],
     },
@@ -134,7 +139,7 @@ const MenuIndex = (props) => {
               {MenuItems.map((item, i) => (
                 <SubMenu
                   key={item.key}
-                  icon={<UserOutlined />}
+                  icon={< UserOutlined/>}
                   title={item.label}
                 >
                   {item.menuList.map((subItem, subI) => (
@@ -144,6 +149,7 @@ const MenuIndex = (props) => {
                   ))}
                 </SubMenu>
               ))}
+              
             </Menu>
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>

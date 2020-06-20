@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import DashboardIndex from "./dashboard";
 import NotFound from "./NotFound";
 import LeadsIndex from "./allLeads/LeadsIndex";
+import managerIndex from "./manager/managerIndex";
+import allManagerIndex from "./manager/allManagerIndex";
 
 const PrivateRoute = ({ component: Component, user, dispatch, ...rest }) => {
   {
@@ -60,6 +62,21 @@ const App = (props) => {
           path="/new-leads"
           exact
           component={NotFound}
+          user={user}
+          dispatch={dispatch}
+        />
+
+        <PrivateRoute
+          path="/manager"
+          exact
+          component={managerIndex}
+          user={user}
+          dispatch={dispatch}
+        />
+         <PrivateRoute
+          path="/allManagerIndex/manager"
+          exact
+          component={allManagerIndex}
           user={user}
           dispatch={dispatch}
         />
