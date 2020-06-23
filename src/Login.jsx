@@ -8,14 +8,14 @@ import "antd/dist/antd.css";
 
 const Login = (props) => {
   const [isLoged, setIsLoged] = useState(false);
-  const [email, setEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   //console.log(props.userAuth);
 
   useEffect(() => {
     {
-    
+       
     }
     localStorage.setItem("username1", "videsh");
     localStorage.setItem("password1", "1234");
@@ -28,20 +28,15 @@ const Login = (props) => {
   }, []);
 
   const handleLogin = () => {
-    if(
-      email === "" ||
-      email === " " ||
-      email === null ||
-      email === undefined 
-  )if(
-    password === "" ||
-    password === " " ||
-    password === null ||
-    password === undefined 
-) {
-      props.loginUser(email, password);
+    if (
+      ((userName === localStorage.getItem("username1")) === true &&
+        (password === localStorage.getItem("password1")) === true) ||
+      ((userName === localStorage.getItem("username2")) === true &&
+        (password === localStorage.getItem("password2")) === true)
+    ) {
+      props.loginUser();
       //document.location.assign("/home");
-      history.push("/home");
+      history.push("/dashboard");
       message.success("login sucessfully");
     } else {
       message.warning("please enter valid user");
@@ -54,7 +49,7 @@ const Login = (props) => {
 
   const onUserNameChange = (e) => {
     //console.log(e.target.value);
-    setEmail(e.target.value);
+    setUserName(e.target.value);
   };
 
   const onPassChange = (e) => {
