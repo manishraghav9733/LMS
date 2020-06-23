@@ -3,18 +3,19 @@ import { message, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
 import { loginUser, logoutUser } from "../src/actions/authActions";
 import history from "./history";
+import crmApi from "../src/actions/index";
 import "antd/dist/antd.css";
 
 const Login = (props) => {
   const [isLoged, setIsLoged] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   //console.log(props.userAuth);
 
   useEffect(() => {
     {
-      /*LIST OF USERS */
+    
     }
     localStorage.setItem("username1", "videsh");
     localStorage.setItem("password1", "1234");
@@ -27,13 +28,18 @@ const Login = (props) => {
   }, []);
 
   const handleLogin = () => {
-    if (
-      ((userName === localStorage.getItem("username1")) === true &&
-        (password === localStorage.getItem("password1")) === true) ||
-      ((userName === localStorage.getItem("username2")) === true &&
-        (password === localStorage.getItem("password2")) === true)
-    ) {
-      props.loginUser();
+    if(
+      email === "" ||
+      email === " " ||
+      email === null ||
+      email === undefined 
+  )if(
+    password === "" ||
+    password === " " ||
+    password === null ||
+    password === undefined 
+) {
+      props.loginUser(email, password);
       //document.location.assign("/home");
       history.push("/home");
       message.success("login sucessfully");
@@ -48,7 +54,7 @@ const Login = (props) => {
 
   const onUserNameChange = (e) => {
     //console.log(e.target.value);
-    setUserName(e.target.value);
+    setEmail(e.target.value);
   };
 
   const onPassChange = (e) => {
@@ -58,7 +64,7 @@ const Login = (props) => {
 
   return (
     <div>
-      <div className="container" style={{ marginTop: "5%" }}>
+      <div className="container" style={{ marginTop: "2%" }}>
         <div
           style={{
             maxWidth: "420px",
@@ -67,7 +73,7 @@ const Login = (props) => {
             borderRadius: "5px",
             background: "#FAFAFA",
             boxShadow: "0 8px 6px -6px black",
-            marginTop:"12%"
+            marginTop:"10%"
           }}
         >
           <div style={{ textAlign: "center" }}>

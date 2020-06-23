@@ -41,7 +41,7 @@ return(
       </Row>
     </Input.Group>
     <div style={{textAlign:'center'}}>
-    <Button type="primary" size="large" style={{width:"30%",marginTop:"40px"}}>Submit</Button>
+    <Button type="primary" size="large" style={{width:"30%",marginTop:"40px"}} onClick={()=>  alert("error")}>Submit</Button>
     </div>
  </div>
 );
