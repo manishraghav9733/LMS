@@ -196,7 +196,7 @@ const LeadsIndex = () => {
         }}
         columns={columns}
         dataSource={data}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 6 }}
       />
     </div>
   );

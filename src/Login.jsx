@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { message, Icon, Input, Button } from "antd";
 import { connect } from "react-redux";
 import { loginUser, logoutUser } from "../src/actions/authActions";
+import { adminLogin } from "../src/actions";
 import history from "./history";
-import crmApi from "../src/actions/index";
+
 import "antd/dist/antd.css";
 
 const Login = (props) => {
@@ -11,45 +12,73 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //console.log(props.userAuth);
+  // console.log(props.cookies);
+  //  console.log(props.userAuth.isSignedIn);
+
+  const setCookies = () => {
+    if (props.userAuth.isSignedIn) {
+      const { cookies } = props;
+      const {
+        Authorization,
+        isSignedIn,
+        userId,
+        userType,
+        userName,
+      } = props.userAuth;
+      cookies.set("Authorization", Authorization, { path: "/" });
+      cookies.set("isSignedIn", isSignedIn, { path: "/" });
+      cookies.set("userId", userId, { path: "/" });
+      cookies.set("userType", userType, { path: "/" });
+      cookies.set("userName", userName, { path: "/" });
+      // console.log("yes");
+
+      //  history.push("/");
+    }
+  };
 
   useEffect(() => {
-    {
-    
-    }
-    localStorage.setItem("username1", "videsh");
-    localStorage.setItem("password1", "1234");
-    localStorage.setItem("username2", "test1");
-    localStorage.setItem("password2", "12345");
+    setCookies();
+  }, [props.userAuth.isSignedIn]);
 
-    {
-      /*LIST OF USERS */
-    }
-  }, []);
+  const handleLogin = async () => {
+    let formValues = {
+      email,
+      password,
+    };
 
-  const handleLogin = () => {
-    if(
-      email === "" ||
-      email === " " ||
-      email === null ||
-      email === undefined 
-  )if(
-    password === "" ||
-    password === " " ||
-    password === null ||
-    password === undefined 
-) {
-      props.loginUser(email, password);
-      //document.location.assign("/home");
-      history.push("/home");
-      message.success("login sucessfully");
-    } else {
-      message.warning("please enter valid user");
-      //props.logoutUser();
+    // props.loginUser(formValues);
+
+    try {
+      const response = await adminLogin(formValues);
+      console.log(response);
+      if (response.status === 200) {
+        props.loginUser(response.data);
+        history.push("/dashboard");
+      }
+    } catch (error) {
+      //console.log(response);
     }
+
+    /*
+    if (email === "" || email === " " || email === null || email === undefined)
+      if (
+        password === "" ||
+        password === " " ||
+        password === null ||
+        password === undefined
+      ) {
+        props.loginUser(email, password);
+        //document.location.assign("/home");
+        history.push("/dashboard");
+        message.success("login sucessfully");
+      } else {
+        message.warning("please enter valid user");
+        //props.logoutUser();
+      }
     if (props.userAuth.isSignedIn) {
       history.push("/dashboard");
     }
+    */
   };
 
   const onUserNameChange = (e) => {
@@ -73,7 +102,7 @@ const Login = (props) => {
             borderRadius: "5px",
             background: "#FAFAFA",
             boxShadow: "0 8px 6px -6px black",
-            marginTop:"10%"
+            marginTop: "10%",
           }}
         >
           <div style={{ textAlign: "center" }}>
@@ -101,7 +130,7 @@ const Login = (props) => {
               onClick={handleLogin}
               type="primary"
               className="login-form-button"
-              style={{background:"#31b5ab",borderColor:"#31b5ab"}}
+              style={{ background: "#31b5ab", borderColor: "#31b5ab" }}
             >
               <Icon type="login" />
               Log in
@@ -113,7 +142,7 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { userAuth: state.userAuth };
+const mapStateToProps = (state, ownProps) => {
+  return { userAuth: state.userAuth, cookies: ownProps.cookies };
 };
 export default connect(mapStateToProps, { loginUser, logoutUser })(Login);

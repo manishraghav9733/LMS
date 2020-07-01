@@ -6,16 +6,27 @@ import {
   NotificationOutlined,
 } from "@ant-design/icons";
 import history from "../history";
+import { useSelector, useDispatch, connect } from "react-redux";
+import { logoutUser } from "../actions/authActions";
+import { withCookies } from "react-cookie";
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const MenuIndex = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const { userType, userName } = props.user;
+
+  const dispatch = useDispatch();
+
+  // const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuKey, setSelectedMenuKey] = useState("");
+  const [globalMenuItems, setGlobalMenuItems] = useState([]);
+
+  //  console.log("props.userAuth", props.user);
 
   const MenuItems = [
     {
+      privillage_type: "admin",
       key: "sub2",
       icon: "question-circle",
       label: "Dashboard",
@@ -28,6 +39,7 @@ const MenuIndex = (props) => {
       ],
     },
     {
+      privillage_type: "admin",
       key: "all-leads",
       icon: "question-circle",
       label: "All Leads",
@@ -40,10 +52,11 @@ const MenuIndex = (props) => {
       ],
     },
     {
+      privillage_type: "super_admin",
       key: "/manager",
       icon: "question-circle",
       label: "Manager",
-      
+
       menuList: [
         {
           key: "/manager",
@@ -59,6 +72,23 @@ const MenuIndex = (props) => {
     },
   ];
 
+  useEffect(() => {
+    let tempList = [];
+    if (userType === "super_admin") {
+      tempList = MenuItems;
+    } else {
+      for (let i = 0; i < MenuItems.length; i++) {
+        // console.log(MenuItems[i].privillage_type);
+        if (MenuItems[i].privillage_type === userType) {
+          tempList.push(MenuItems[i]);
+        }
+      }
+    }
+    // console.log("tempList", tempList);
+    setGlobalMenuItems(tempList);
+    return () => {};
+  }, [userType]);
+
   const onTopMenuNavigation = (type) => {
     setSelectedMenuKey(type);
     switch (type) {
@@ -71,6 +101,18 @@ const MenuIndex = (props) => {
       default:
         return null;
     }
+  };
+
+  const onLogOutUser = () => {
+    const { cookies } = props;
+    cookies.remove("Authorization", { path: "/" });
+    cookies.remove("isSignedIn", { path: "/" });
+    cookies.remove("userId", { path: "/" });
+    cookies.remove("userType", { path: "/" });
+    cookies.remove("userName", { path: "/" });
+
+    // dispatch(logoutUser());
+    props.logoutUser();
   };
 
   return (
@@ -103,7 +145,11 @@ const MenuIndex = (props) => {
             </Menu.Item>
             <Menu.Item key="4">Status</Menu.Item>
             <Menu.Item style={{ float: "right" }} key="5">
-              <Button style={{ marginTop: "20px" }} type="danger">
+              <Button
+                onClick={onLogOutUser}
+                style={{ marginTop: "20px" }}
+                type="danger"
+              >
                 Log Out
               </Button>
             </Menu.Item>
@@ -132,14 +178,14 @@ const MenuIndex = (props) => {
                 <div style={{ marginTop: "30px" }}>
                   <Badge
                     color="#87d068"
-                    text={<span style={{ color: "#fff" }}>Super Admin</span>}
+                    text={<span style={{ color: "#fff" }}>{userName}</span>}
                   />
                 </div>
               </div>
-              {MenuItems.map((item, i) => (
+              {globalMenuItems.map((item, i) => (
                 <SubMenu
                   key={item.key}
-                  icon={< UserOutlined/>}
+                  icon={<UserOutlined />}
                   title={item.label}
                 >
                   {item.menuList.map((subItem, subI) => (
@@ -149,7 +195,6 @@ const MenuIndex = (props) => {
                   ))}
                 </SubMenu>
               ))}
-              
             </Menu>
           </Sider>
           <Layout style={{ padding: "0 24px 24px" }}>
@@ -184,4 +229,12 @@ const MenuIndex = (props) => {
   );
 };
 
-export default MenuIndex;
+//export default MenuIndex;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userAuth,
+  };
+};
+
+export default withCookies(connect(mapStateToProps, { logoutUser })(MenuIndex));
