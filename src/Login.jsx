@@ -56,7 +56,7 @@ const Login = (props) => {
         history.push("/dashboard");
       }
     } catch (error) {
-      //console.log(response);
+      message.warning(error.response.data.message);
     }
 
     /*
