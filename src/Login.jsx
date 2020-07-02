@@ -12,24 +12,26 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // console.log(props.cookies);
+  //  console.log(props.cookies);
   //  console.log(props.userAuth.isSignedIn);
 
   const setCookies = () => {
     if (props.userAuth.isSignedIn) {
       const { cookies } = props;
-      const {
-        Authorization,
-        isSignedIn,
-        userId,
-        userType,
-        userName,
-      } = props.userAuth;
-      cookies.set("Authorization", Authorization, { path: "/" });
-      cookies.set("isSignedIn", isSignedIn, { path: "/" });
-      cookies.set("userId", userId, { path: "/" });
-      cookies.set("userType", userType, { path: "/" });
-      cookies.set("userName", userName, { path: "/" });
+      if (cookies) {
+        const {
+          Authorization,
+          isSignedIn,
+          userId,
+          userType,
+          userName,
+        } = props.userAuth;
+        cookies.set("Authorization", Authorization, { path: "/" });
+        cookies.set("isSignedIn", isSignedIn, { path: "/" });
+        cookies.set("userId", userId, { path: "/" });
+        cookies.set("userType", userType, { path: "/" });
+        cookies.set("userName", userName, { path: "/" });
+      }
       // console.log("yes");
 
       //  history.push("/");
