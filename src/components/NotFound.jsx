@@ -2,7 +2,7 @@ import React from "react";
 import { Result, Button } from "antd";
 import history from "../history";
 
-const NotFound = () => {
+const NotFound = (props) => {
   const backToHome = () => {
     history.push("/dashboard");
   };
@@ -10,9 +10,9 @@ const NotFound = () => {
   return (
     <div>
       <Result
-        status="404"
-        title="404"
-        subTitle="Sorry, the page you visited does not exist. We are working on it"
+        status={props.status ? props.status : "404"}
+        title={props.title ? props.title : "404"}
+        subTitle={props.subTitle}
         extra={
           <Button onClick={backToHome} type="primary">
             Back Home

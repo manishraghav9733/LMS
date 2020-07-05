@@ -59,13 +59,13 @@ const MenuIndex = (props) => {
 
       menuList: [
         {
-          key: "/manager",
-          onClick: () => history.push("/manager"),
+          key: "/manager/add-manager",
+          onClick: () => history.push("/manager/add-manager"),
           label: "Add Manager",
         },
         {
-          key: "/allManagerIndex/manager",
-          onClick: () => history.push("/allManagerIndex/manager"),
+          key: "/manager/list",
+          onClick: () => history.push("/manager/list"),
           label: "All Manager",
         },
       ],

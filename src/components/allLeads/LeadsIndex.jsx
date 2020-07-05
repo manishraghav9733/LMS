@@ -1,13 +1,33 @@
-import React, { useState } from "react";
-import { Table, Icon, Button, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table, Icon, Button, Input, message } from "antd";
+import { getLeadList, bulkUploadLeads } from "../../actions";
 const { Search } = Input;
 
 const LeadsIndex = () => {
+  const [leadData, setLeadData] = useState([]);
+  const [loadAgain, setLoadAgain] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const callDataApi = async () => {
+      setLoading(true);
+      try {
+        const response = await getLeadList();
+        // console.log(response.data.data);
+        setLeadData(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    };
+    callDataApi();
+    return () => {};
+  }, [loadAgain]);
+
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
-      render: (text) => <a>{text}</a>,
     },
     {
       title: "Email",
@@ -19,143 +39,15 @@ const LeadsIndex = () => {
     },
     {
       title: "Lead Type",
-      dataIndex: "type",
+      dataIndex: "leadType",
+    },
+    {
+      title: "User Assigned",
+      dataIndex: "userAssigned",
     },
     {
       title: "Status",
       dataIndex: "status",
-    },
-  ];
-
-  const data = [
-    {
-      key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "2",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "3",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "4",
-      name: "Disabled User",
-      age: 99,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "5",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "6",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "7",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "8",
-      name: "Disabled User",
-      age: 99,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "9",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "10",
-      name: "Jim Green",
-      age: 42,
-      address: "London No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "11",
-      name: "Joe Black",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
-    },
-    {
-      key: "12",
-      name: "Disabled User",
-      age: 99,
-      address: "Sidney No. 1 Lake Park",
-
-      email: "abc@gmail.com",
-      status: "Not Interested",
-      type: "digital Marketing",
-      phone: "123456789",
     },
   ];
 
@@ -173,15 +65,62 @@ const LeadsIndex = () => {
     }),
   };
 
+  const callSubmitBulkUploadApi = async (csv_file) => {
+    try {
+      const response = await bulkUploadLeads(csv_file);
+      //  setloader(true);
+      //  setloadAgain(true);
+      if (response.status === 200) {
+        message.success("File uploaded successfully");
+        setLoadAgain(!loadAgain);
+      }
+
+      // setloader(false);
+      // setloadAgain(false);
+    } catch (err) {
+      message.error(err.response.data.message);
+    }
+  };
+
+  const filechangeHandler = (e) => {
+    callSubmitBulkUploadApi(e.target.files[0]);
+  };
+
+  const clearFileInput = (event) => {
+    event.target.value = null;
+  };
+
   return (
     <div>
       <div style={{ textAlign: "right", marginBottom: "40px" }}>
-        <Button
-          type="primary"
-          //  onClick={() => createNew()}
-        >
-          <Icon type="plus-circle" /> Add New Lead
-        </Button>
+        <span>
+          <label>
+            <Input
+              type="file"
+              style={{ display: "none" }}
+              onChange={filechangeHandler}
+              multiple
+              id="bulkUploadBtn"
+              onClick={clearFileInput}
+              accept=".csv"
+            />
+            <span
+              style={{
+                background: "#1890ff",
+                color: "#fff",
+                fontWeight: 400,
+                cursor: "pointer",
+                fontSize: "14px",
+                padding: "6.5px 15px",
+                borderRadius: "4px",
+                lineHeight: "1.499",
+              }}
+            >
+              <Icon type="upload" style={{ paddingRight: "5px" }} />
+              Bulk-Upload
+            </span>
+          </label>
+        </span>
       </div>
       <div style={{ marginBottom: "30px" }}>
         <Search
@@ -195,8 +134,10 @@ const LeadsIndex = () => {
           ...rowSelection,
         }}
         columns={columns}
-        dataSource={data}
+        dataSource={leadData}
         pagination={{ pageSize: 6 }}
+        rowKey={(row) => row._id}
+        loading={loading}
       />
     </div>
   );
