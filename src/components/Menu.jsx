@@ -210,8 +210,8 @@ const MenuIndex = (props) => {
               style={{
                 padding: 24,
                 margin: 0,
-                // minHeight: 280,
-                //  overflowY: "hidden",
+                maxHeight: 280,
+                // overflowY: "auto",
               }}
             >
               <div

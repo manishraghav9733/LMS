@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Row } from "antd";
 import DetalsCard from "./detailCard";
+import { getLeadsStatusData } from "../../actions";
 
 const DashboardIndex = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const callDataApi = async () => {
+      try {
+        const response = await getLeadsStatusData();
+        setData(response.data.data);
+      } catch (error) {}
+    };
+    callDataApi();
+    return () => {};
+  }, []);
+
+  /*
   const cardDetail = [
     {
       name: "Current Client",
@@ -35,16 +50,17 @@ const DashboardIndex = () => {
       color: "#2295FF",
     },
   ];
+  */
 
   return (
     <div className="site-card-wrapper">
       <Row gutter={[24, 16]}>
-        {cardDetail.map((item, i) => (
+        {data.map((item, i) => (
           <Col key={i} span={8}>
             <DetalsCard
               title={item.name}
-              value={item.value}
-              color={item.color}
+              value={item.count}
+              //color={item.color}
             />
           </Col>
         ))}

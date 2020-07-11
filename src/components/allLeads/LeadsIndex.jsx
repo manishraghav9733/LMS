@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Table, Icon, Button, Input, message } from "antd";
-import { getLeadList, bulkUploadLeads } from "../../actions";
+import {
+  Table,
+  Icon,
+  Button,
+  Input,
+  message,
+  Pagination,
+  Popconfirm,
+} from "antd";
+import { getLeadList, bulkUploadLeads, getLeadDelete } from "../../actions";
+
 const { Search } = Input;
 
 const LeadsIndex = () => {
   const [leadData, setLeadData] = useState([]);
   const [loadAgain, setLoadAgain] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [offSet, setOffSet] = useState(0);
+  const [count, setCount] = useState(null);
+  const limit = 10;
 
   useEffect(() => {
     const callDataApi = async () => {
       setLoading(true);
       try {
-        const response = await getLeadList();
+        const response = await getLeadList(limit, offSet);
         // console.log(response.data.data);
         setLeadData(response.data.data);
+        setCount(response.data.count);
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -49,7 +62,44 @@ const LeadsIndex = () => {
       title: "Status",
       dataIndex: "status",
     },
+    {
+      title: "Actions",
+      key: "action",
+      render: (record) => (
+        <span>
+          <span>
+            <Popconfirm
+              title="Are you sure you want to delete ?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => onDelete(record)}
+            >
+              <Button
+                type="link"
+                style={{
+                  color: "red",
+                  padding: 0,
+                  marginRight: "10px",
+                }}
+              >
+                Delete
+              </Button>
+            </Popconfirm>
+          </span>
+        </span>
+      ),
+    },
   ];
+
+  const onDelete = async (data) => {
+    // console.log(data);
+    let id = data._id;
+    try {
+      const response = await getLeadDelete(id);
+      setLoadAgain(!loadAgain);
+      message.success("lead deleted successfully");
+    } catch (error) {}
+  };
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -88,6 +138,21 @@ const LeadsIndex = () => {
 
   const clearFileInput = (event) => {
     event.target.value = null;
+  };
+
+  const handlePageChange = async (pageNumber) => {
+    const temp_offset = pageNumber * limit - limit;
+    setOffSet(temp_offset);
+    setLoading(true);
+    try {
+      const response = await getLeadList(limit, temp_offset);
+      // console.log(response.data.data);
+      setLeadData(response.data.data);
+      setCount(response.data.count);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (
@@ -135,10 +200,17 @@ const LeadsIndex = () => {
         }}
         columns={columns}
         dataSource={leadData}
-        pagination={{ pageSize: 6 }}
+        pagination={false}
         rowKey={(row) => row._id}
         loading={loading}
       />
+      <div style={{ marginTop: "30px", textAlign: "right" }}>
+        <Pagination
+          current={(offSet + limit) / limit}
+          total={count}
+          onChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 };

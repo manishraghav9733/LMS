@@ -10,7 +10,7 @@ const DetalsCard = (props) => {
         style={{
           width: 240,
           textAlign: "center",
-          borderTop: `4px solid ${props.color}`,
+          borderTop: `4px solid #52C41A`,
         }}
       >
         <p>{props.value}</p>

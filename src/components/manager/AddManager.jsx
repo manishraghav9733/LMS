@@ -7,9 +7,12 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { addUser } from "../../actions";
+import { useSelector } from "react-redux";
 import history from "../../history";
+import NotFound from "../NotFound";
 
 const AddManager = (props) => {
+  const user = useSelector((state) => state.userAuth);
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 12 },
@@ -50,85 +53,93 @@ const AddManager = (props) => {
 
   const { getFieldDecorator } = props.form;
   return (
-    <div className="site-input-group-wrapper">
-      <h2 style={{ marginBottom: "40px" }}>Add Manager</h2>
+    <div>
+      {user.userType === "super_admin" ? (
+        <div className="site-input-group-wrapper">
+          <h2 style={{ marginBottom: "40px" }}>Add Manager</h2>
 
-      <Form
-        {...layout}
-        // onSubmit={onSubmit}
-      >
-        <Form.Item label="UserName">
-          {getFieldDecorator("username", {
-            rules: [
-              {
-                required: true,
-                message: "UserName cannot be blank!",
-              },
-            ],
-          })(
-            <Input
-              allowClear
-              prefix={<UserOutlined />}
-              placeholder="User Name"
-              type="text"
-            />
-          )}
-        </Form.Item>
-        <Form.Item label="Email">
-          {getFieldDecorator("email", {
-            rules: [
-              {
-                required: true,
-                message: "Email Address cannot be blank!",
-              },
-            ],
-          })(
-            <Input
-              allowClear
-              prefix={<UserOutlined />}
-              placeholder="User Email"
-              type="email"
-            />
-          )}
-        </Form.Item>
-        <Form.Item label="Password">
-          {getFieldDecorator("password", {
-            rules: [
-              {
-                required: true,
-                message: "Password cannot be empty!",
-              },
-            ],
-          })(
-            <Input
-              allowClear
-              prefix={<LockOutlined />}
-              placeholder="Password"
-              type="password"
-            />
-          )}
-        </Form.Item>
-        <Form.Item label="User Type">
-          {getFieldDecorator("userType", {
-            rules: [
-              {
-                required: true,
-                message: "Select User Type!",
-              },
-            ],
-          })(
-            <Select placeholder="Select User Type">
-              <Select.Option value="super_admin">Super Admin</Select.Option>
-              <Select.Option value="admin">Admin</Select.Option>
-            </Select>
-          )}
-        </Form.Item>
-        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button onClick={onSubmit} type="primary">
-            Add Manager
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form
+            {...layout}
+            // onSubmit={onSubmit}
+          >
+            <Form.Item label="UserName">
+              {getFieldDecorator("username", {
+                rules: [
+                  {
+                    required: true,
+                    message: "UserName cannot be blank!",
+                  },
+                ],
+              })(
+                <Input
+                  allowClear
+                  prefix={<UserOutlined />}
+                  placeholder="User Name"
+                  type="text"
+                />
+              )}
+            </Form.Item>
+            <Form.Item label="Email">
+              {getFieldDecorator("email", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Email Address cannot be blank!",
+                  },
+                ],
+              })(
+                <Input
+                  allowClear
+                  prefix={<UserOutlined />}
+                  placeholder="User Email"
+                  type="email"
+                />
+              )}
+            </Form.Item>
+            <Form.Item label="Password">
+              {getFieldDecorator("password", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Password cannot be empty!",
+                  },
+                ],
+              })(
+                <Input
+                  allowClear
+                  prefix={<LockOutlined />}
+                  placeholder="Password"
+                  type="password"
+                />
+              )}
+            </Form.Item>
+            <Form.Item label="User Type">
+              {getFieldDecorator("userType", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Select User Type!",
+                  },
+                ],
+              })(
+                <Select placeholder="Select User Type">
+                  <Select.Option value="super_admin">Super Admin</Select.Option>
+                  <Select.Option value="admin">Admin</Select.Option>
+                </Select>
+              )}
+            </Form.Item>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+              <Button onClick={onSubmit} type="primary">
+                Add Manager
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      ) : (
+        <div>
+          <NotFound subTitle="Access Denied" status="500" title="500" />
+        </div>
+      )}
     </div>
   );
 };

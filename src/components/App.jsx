@@ -6,7 +6,7 @@ import Routing from "./Routing";
 import { connect } from "react-redux";
 import { withCookies } from "react-cookie";
 import { setUserAuthValue } from "../actions/authActions";
-//import "./App.css";
+import "./App.css";
 
 class App extends React.Component {
   constructor(props) {
