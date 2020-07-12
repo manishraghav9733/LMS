@@ -53,19 +53,28 @@ const DashboardIndex = () => {
   */
 
   return (
-    <div className="site-card-wrapper">
-      <Row gutter={[24, 16]}>
-        {data.map((item, i) => (
-          <Col key={i} span={8}>
-            <DetalsCard
-              title={item.name}
-              value={item.count}
-              //color={item.color}
-            />
-          </Col>
-        ))}
-      </Row>
-    </div>
+    <>
+      {data.length > 0 ? (
+        <div className="site-card-wrapper">
+          <Row gutter={[24, 16]}>
+            {data.map((item, i) => (
+              <Col key={i} span={8}>
+                <DetalsCard
+                  title={item.name}
+                  value={item.count.length}
+                  //color={item.color}
+                  data={item}
+                />
+              </Col>
+            ))}
+          </Row>
+        </div>
+      ) : (
+        <div>
+          <span>No Data</span>
+        </div>
+      )}
+    </>
   );
 };
 export default DashboardIndex;

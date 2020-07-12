@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Card, Col, Row } from "antd";
 
 const DetalsCard = (props) => {
+  const onCardClick = (data) => {
+    console.log("selected status", data);
+  };
   return (
     <div>
       <Card
@@ -12,6 +15,7 @@ const DetalsCard = (props) => {
           textAlign: "center",
           borderTop: `4px solid #52C41A`,
         }}
+        onClick={() => onCardClick(props.data)}
       >
         <p>{props.value}</p>
       </Card>

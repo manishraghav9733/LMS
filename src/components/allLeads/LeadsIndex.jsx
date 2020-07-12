@@ -9,6 +9,7 @@ import {
   Popconfirm,
 } from "antd";
 import { getLeadList, bulkUploadLeads, getLeadDelete } from "../../actions";
+import moment from "moment";
 
 const { Search } = Input;
 
@@ -61,6 +62,14 @@ const LeadsIndex = () => {
     {
       title: "Status",
       dataIndex: "status",
+    },
+    {
+      title: "date",
+      key: "date",
+      dataIndex: "date",
+      render: (date) => {
+        return moment(date).format("YYYY-MM-DD");
+      },
     },
     {
       title: "Actions",

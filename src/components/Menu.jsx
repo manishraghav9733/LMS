@@ -197,7 +197,7 @@ const MenuIndex = (props) => {
               ))}
             </Menu>
           </Sider>
-          <Layout style={{ padding: "0 24px 24px" }}>
+          <Layout style={{ padding: "0 24px 24px", overflowX: "auto" }}>
             {/**
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -211,7 +211,7 @@ const MenuIndex = (props) => {
                 padding: 24,
                 margin: 0,
                 maxHeight: 280,
-                // overflowY: "auto",
+                // overflowX: "auto",
               }}
             >
               <div
