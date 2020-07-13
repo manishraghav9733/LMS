@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Menu, Breadcrumb, Avatar, Badge, Button } from "antd";
+import { Layout, Menu, Popconfirm, Avatar, Badge, Button, Icon } from "antd";
 import {
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
+  PieChartOutlined,
+  TeamOutlined,
+  LineChartOutlined,
 } from "@ant-design/icons";
 import history from "../history";
 import { useSelector, useDispatch, connect } from "react-redux";
@@ -18,7 +21,7 @@ const MenuIndex = (props) => {
 
   const dispatch = useDispatch();
 
-  // const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuKey, setSelectedMenuKey] = useState("");
   const [globalMenuItems, setGlobalMenuItems] = useState([]);
 
@@ -28,7 +31,7 @@ const MenuIndex = (props) => {
     {
       privillage_type: "admin",
       key: "sub2",
-      icon: "question-circle",
+      icon: <PieChartOutlined />,
       label: "Dashboard",
       menuList: [
         {
@@ -41,7 +44,7 @@ const MenuIndex = (props) => {
     {
       privillage_type: "admin",
       key: "all-leads",
-      icon: "question-circle",
+      icon: <LineChartOutlined />,
       label: "All Leads",
       menuList: [
         {
@@ -54,7 +57,7 @@ const MenuIndex = (props) => {
     {
       privillage_type: "super_admin",
       key: "/manager",
-      icon: "question-circle",
+      icon: <TeamOutlined />,
       label: "Manager",
 
       menuList: [
@@ -115,22 +118,39 @@ const MenuIndex = (props) => {
     props.logoutUser();
   };
 
+  const onCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
     <div>
       <Layout>
-        <Header className="header">
-          <div className="logo" />
+        <Header
+        // className="header"
+        >
           <Menu
             theme="dark"
             mode="horizontal"
             defaultSelectedKeys={selectedMenuKey}
           >
+            <Menu.Item>
+              <div style={{ marginTop: "10px", background: "#fff" }}>
+                <img
+                  src="https://www.ranoliaventures.com/images/logo.png"
+                  alt="logo"
+                  width="auto"
+                  height="40px"
+                />
+              </div>
+            </Menu.Item>
+            {/**
             <Menu.Item
               onClick={() => onTopMenuNavigation("dashboard")}
               key="dashboard"
             >
               Home{" "}
             </Menu.Item>
+            
             <Menu.Item
               onClick={() => onTopMenuNavigation("all-leads")}
               key="all-leads"
@@ -144,17 +164,26 @@ const MenuIndex = (props) => {
               New Leads
             </Menu.Item>
             <Menu.Item key="4">Status</Menu.Item>
-            <Menu.Item style={{ float: "right" }} key="5">
-              <Button
-                onClick={onLogOutUser}
-                style={{ marginTop: "20px" }}
-                type="danger"
+             */}
+            <Menu.Item style={{ float: "right", background: "none" }}>
+              <Popconfirm
+                title="Are you sure you want log out ?"
+                okText="Yes"
+                cancelText="No"
+                onConfirm={onLogOutUser}
               >
-                Log Out
-              </Button>
+                <Button
+                  //  onClick={onLogOutUser}
+                  style={{ marginTop: "20px" }}
+                  type="danger"
+                >
+                  Log Out
+                </Button>
+              </Popconfirm>
             </Menu.Item>
           </Menu>
         </Header>
+
         <Layout>
           <Sider
             style={{
@@ -165,6 +194,9 @@ const MenuIndex = (props) => {
             }}
             width={200}
             className="site-layout-background"
+            // collapsedWidth={80}
+            //  collapsed={collapsed}
+            //   onCollapse={onCollapse}
           >
             <Menu
               mode="inline"
@@ -174,7 +206,9 @@ const MenuIndex = (props) => {
               style={{ height: "100%", borderRight: 0 }}
             >
               <div style={{ padding: "15px", textAlign: "center" }}>
+                {/**
                 <Avatar size={64} icon={<UserOutlined />} />
+                 */}
                 <div style={{ marginTop: "30px" }}>
                   <Badge
                     color="#87d068"
@@ -184,9 +218,14 @@ const MenuIndex = (props) => {
               </div>
               {globalMenuItems.map((item, i) => (
                 <SubMenu
+                  //  icon={<UserOutlined />}
+                  //  collapsed={collapsed}
                   key={item.key}
-                  icon={<UserOutlined />}
-                  title={item.label}
+                  title={
+                    <span>
+                      {item.icon} {item.label}
+                    </span>
+                  }
                 >
                   {item.menuList.map((subItem, subI) => (
                     <Menu.Item onClick={subItem.onClick} key={subItem.key}>
@@ -197,7 +236,12 @@ const MenuIndex = (props) => {
               ))}
             </Menu>
           </Sider>
-          <Layout style={{ padding: "0 24px 24px", overflowX: "auto" }}>
+          <Layout
+            style={{
+              //padding: "0 24px 24px",
+              overflowX: "auto",
+            }}
+          >
             {/**
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>

@@ -43,6 +43,15 @@ const Login = (props) => {
   }, [props.userAuth.isSignedIn]);
 
   const handleLogin = async () => {
+    if (email === "" || email === null || email === undefined) {
+      message.warning("Please Enter Email");
+      return;
+    }
+    if (password === "" || password === null || password === undefined) {
+      message.warning("Please Enter password");
+      return;
+    }
+
     let formValues = {
       email,
       password,

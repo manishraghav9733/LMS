@@ -73,8 +73,13 @@ const ManagerList = () => {
   ];
 
   const onDelete = async (data) => {
-    //  console.log(data);
     let id = data._id;
+
+    if (data._id === user.userId) {
+      message.warning("Invalid Operation");
+      return;
+    }
+
     try {
       const response = await getManagerDelete(id);
       setLoadAgain(!loadAgain);
